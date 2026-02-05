@@ -6,6 +6,8 @@ from fastapi import FastAPI, UploadFile, File, Request, Header
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse, FileResponse, Response
 from fastapi.staticfiles import StaticFiles
+from fastapi import FastAPI, Request
+
 
 
 # =========================================================
@@ -33,6 +35,14 @@ ALLOWED_LANGUAGES = set(SUPPORTED_LANG_MAP.values())
 app = FastAPI(title="ECHO SPHERE")
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
+
+
+
+@app.post("/github-webhook")
+async def github_webhook(request: Request):
+    payload = await request.json()
+    print(payload)
+    return {"status": "received"}
 
 @app.post("/debug/headers")
 async def debug_headers(request: Request):
